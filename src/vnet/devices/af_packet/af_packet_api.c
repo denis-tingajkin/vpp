@@ -62,7 +62,7 @@ vl_api_af_packet_create_t_handler (vl_api_af_packet_create_t * mp)
 
   rv = af_packet_create_if (vm, host_if_name,
 			    mp->use_random_hw_addr ? 0 : mp->hw_addr,
-			    &sw_if_index);
+			    &sw_if_index, AF_PACET_INTERFACE_MODE_ETHERNET);
 
   vec_free (host_if_name);
 

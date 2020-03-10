@@ -39,18 +39,22 @@
  * This file contains the source code for CLI for the host interface.
  */
 
+
 static clib_error_t *
 af_packet_create_command_fn (vlib_main_t * vm, unformat_input_t * input,
 			     vlib_cli_command_t * cmd)
 {
   unformat_input_t _line_input, *line_input = &_line_input;
   u8 *host_if_name = NULL;
+  afpacket_interface_mode_t mode = AF_PACET_INTERFACE_MODE_ETHERNET;
+  mode = AF_PACKET_INTERFACE_MODE_IP;
   u8 hwaddr[6];
   u8 *hw_addr_ptr = 0;
   u32 sw_if_index;
   int r;
   clib_error_t *error = NULL;
 
+  vlib_cli_output(vm, "injected:)");
   /* Get a line of input. */
   if (!unformat_user (input, unformat_line_input, line_input))
     return 0;
@@ -77,7 +81,7 @@ af_packet_create_command_fn (vlib_main_t * vm, unformat_input_t * input,
       goto done;
     }
 
-  r = af_packet_create_if (vm, host_if_name, hw_addr_ptr, &sw_if_index);
+  r = af_packet_create_if (vm, host_if_name, hw_addr_ptr, &sw_if_index, mode);
 
   if (r == VNET_API_ERROR_SYSCALL_ERROR_1)
     {
